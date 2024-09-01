@@ -1,0 +1,98 @@
+{
+  "users": [
+    {
+      "id": "0001",
+      "username": "john_doe",
+      "password": "password123"
+    },
+    {
+      "id": "0002",
+      "username": "jane_smith",
+      "password": "mypassword"
+    },
+    {
+      "id": "0003",
+      "username": "ama",
+      "password": "123"
+    },
+    {
+      "id": "d677",
+      "username": "sam",
+      "password": "123"
+    }
+  ],
+  "shoes": [
+    {
+      "name": "Nike Air VaporMax Plus",
+      "price": "210",
+      "image": "Shoe1",
+      "detailsImage": "detShoe2",
+      "description": "Men's Shoes",
+      "isFavorite": false,
+      "color": "green",
+      "bgColor": "GreenGlow2",
+      "topCornerColor": "GreenGlow",
+      "id": "01"
+    },
+    {
+      "name": "Nike Jordan Why Not.5",
+      "price": "110",
+      "image": "Shoe2",
+      "detailsImage": "detShoe4",
+      "description": "Basketball Shoes",
+      "isFavorite": false,
+      "color": "#ff69b4",
+      "bgColor": "PinkGlow2",
+      "topCornerColor": "PinkGlow",
+      "id": "02"
+    },
+    {
+      "name": "Nike Jordan 1",
+      "price": "350",
+      "image": "Shoe3",
+      "detailsImage": "detShoe6",
+      "description": "Unisex Basketball Shoes",
+      "isFavorite": false,
+      "color": "red",
+      "bgColor": "RedGlow",
+      "topCornerColor": "RedGlow",
+      "id": "03"
+    }
+  ],
+  "favorites": [
+    {
+      "id": "c21f",
+      "userId": "0003",
+      "shoeId": "03",
+      "name": "Nike Jordan 1"
+    },
+    {
+      "id": "3543",
+      "userId": "0003",
+      "shoeId": "02",
+      "name": "Nike Jordan Why Not.5"
+    },
+    {
+      "id": "4d89",
+      "userId": "0003",
+      "shoeId": "01",
+      "name": "Nike Air VaporMax Plus"
+    }
+  ],
+  "carts": [
+    {
+      "id": "8874",
+      "userId": "0003",
+      "shoeId": "03",
+      "name": "Nike Jordan 1",
+      "price": "350"
+    },
+    {
+      "id": "7c40",
+      "userId": "0003",
+      "shoeId": "02",
+      "name": "Nike Jordan Why Not.5",
+      "price": "110"
+    }
+  ]
+}

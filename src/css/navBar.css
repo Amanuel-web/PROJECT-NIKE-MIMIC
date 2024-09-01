@@ -1,0 +1,13 @@
+body {
+  margin: 0%;
+  padding: 0%;
+  background-color: #000;
+  position: relative;
+  width: 100%;
+}
+
+#nike-logo {
+  width: 200px;
+  height: 100px;
+  object-fit: cover;
+}
