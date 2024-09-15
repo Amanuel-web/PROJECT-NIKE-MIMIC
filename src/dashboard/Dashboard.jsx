@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import SearchAppBar from "./NavBar";
 import LandingPage from "./LandingPage";
 import ProductDetail from "./ProductDetail";
 import Checkout from "./Checkout";
 import "../css/transitions.css";
+import { getACart, getFavorite } from "../api";
 
 export const Dashboard = ({ setView, setIsAuthenticated }) => {
   const [viewLandingPage, setViewLandingPage] = useState("landingPage");
@@ -13,35 +14,29 @@ export const Dashboard = ({ setView, setIsAuthenticated }) => {
   const [favorites, setFavorites] = useState([]);
   const [carts, setAddToCart] = useState([]);
 
-  const fetchFavorites = async (userId) => {
+  const fetchFavorites = useCallback(async (userId) => {
     if (userId) {
       try {
-        const responseFavorite = await fetch(
-          `http://localhost:3000/favorites?userId=${userId}`
-        );
-        const dataOfFavorite = await responseFavorite.json();
+        const dataOfFavorite = await getFavorite({ userId });
 
         setFavorites(dataOfFavorite);
       } catch (error) {
         console.error("Error fetching favorites:", error);
       }
     }
-  };
+  }, []);
 
-  const fetchCarts = async (userId) => {
+  const fetchCarts = useCallback(async (userId) => {
     if (userId) {
       try {
-        const responseCarts = await fetch(
-          `http://localhost:3000/carts?userId=${userId}`
-        );
-        const dataOfCarts = await responseCarts.json();
+        const dataOfCarts = await getACart({ userId });
 
-        setAddToCart(dataOfCarts);
+        await setAddToCart(dataOfCarts);
       } catch (error) {
         console.error("Error fetching favorites:", error);
       }
     }
-  };
+  }, []);
 
   return (
     <TransitionGroup>
@@ -52,7 +47,7 @@ export const Dashboard = ({ setView, setIsAuthenticated }) => {
               fetchFavorites={fetchFavorites}
               fetchCarts={fetchCarts}
               favorites={favorites}
-              carts={carts}
+              carts={carts || []}
               setViewLandingPage={setViewLandingPage}
               setView={setView}
               setIsAuthenticated={setIsAuthenticated}

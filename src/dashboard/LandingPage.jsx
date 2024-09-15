@@ -12,10 +12,10 @@ import "../css/landing-page.css";
 import { useUser } from "../providers/UserProvider";
 import {
   createFavorite,
-  getAllFavorite,
+  getFavorite,
   removeFavorite,
   addToCart,
-  getAllCarts,
+  getACart,
   removeFromCart,
 } from "../api";
 import { fetchShoes, nextShoe, prevShoe } from "../redux/shoeSlice";
@@ -37,6 +37,8 @@ export default function LandingPage({
   const { user } = useUser();
   const [isFavorite, setIsFavorite] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const currentShoe = shoes[currentIndex];
+  const userId = user ? user : null;
 
   useEffect(() => {
     if (status === "idle") {
@@ -44,23 +46,23 @@ export default function LandingPage({
     }
   }, [status, dispatch]);
 
-  const currentShoe = shoes[currentIndex];
-
   useEffect(() => {
     if (currentShoe) {
       setIsFavorite(
-        favorites.some(
-          (favorite) =>
-            favorite.userId === user && favorite.shoeId === currentShoe.id
-        )
+        Array.isArray(favorites) &&
+          favorites.some(
+            (favorite) =>
+              favorite.userId === userId && favorite.shoeId === currentShoe.id
+          )
       );
       setIsAddedToCart(
-        carts.some(
-          (cart) => cart.userId === user && cart.shoeId === currentShoe.id
-        )
+        Array.isArray(carts) &&
+          carts.some(
+            (cart) => cart.userId === userId && cart.shoeId === currentShoe.id
+          )
       );
     }
-  }, [favorites, carts, currentShoe, user]);
+  }, [favorites, carts, currentShoe, userId]);
 
   if (status === "loading") {
     return <Typography>Loading...</Typography>;
@@ -81,18 +83,19 @@ export default function LandingPage({
 
   const handleFavoriteToggle = async () => {
     try {
-      const allFavorite = await getAllFavorite();
+      const allFavorite = await getFavorite({ userId: userId });
+
       const matchingFavorite = allFavorite.find(
-        (fav) => fav.userId === user && fav.shoeId === currentShoe.id
+        (fav) => fav.userId === userId && fav.shoeId === currentShoe.id
       );
 
       if (!matchingFavorite) {
-        await createFavorite(user, currentShoe.id, currentShoe.name);
+        await createFavorite(userId, currentShoe.id, currentShoe.name);
       } else {
         await removeFavorite({ favoriteId: matchingFavorite.id });
       }
 
-      fetchFavorites(user);
+      await fetchFavorites(userId);
     } catch (error) {
       console.error("Error toggling favorite:", error);
     }
@@ -100,14 +103,14 @@ export default function LandingPage({
 
   const handleCartToggle = async () => {
     try {
-      const allAddedCart = await getAllCarts();
+      const allAddedCart = await getACart({ userId });
       const matchingCart = allAddedCart.find(
-        (cart) => cart.userId === user && cart.shoeId === currentShoe.id
+        (cart) => cart.userId === userId && cart.shoeId === currentShoe.id
       );
 
       if (!matchingCart) {
         await addToCart(
-          user,
+          userId,
           currentShoe.id,
           currentShoe.name,
           currentShoe.price
@@ -116,7 +119,7 @@ export default function LandingPage({
         await removeFromCart({ cartId: matchingCart.id });
       }
 
-      fetchCarts(user);
+      await fetchCarts(userId);
     } catch (error) {
       console.error("Error toggling cart:", error);
     }
@@ -387,5 +390,5 @@ LandingPage.propTypes = {
   fetchFavorites: PropTypes.func.isRequired,
   fetchCarts: PropTypes.func.isRequired,
   favorites: PropTypes.array.isRequired,
-  carts: PropTypes.array.isRequired,
+  carts: PropTypes.array,
 };

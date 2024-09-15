@@ -37,59 +37,51 @@ export const Request = {
   },
 
   createFavorite: async (userId, shoeId, name) => {
-    fetch(`${BASE_URL}/favorites`, {
+    const response = await fetch(`${BASE_URL}/favorites`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ userId, shoeId, name }),
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to create Favorite");
-      }
-      return response;
     });
+    if (!response.ok) {
+      throw new Error("Failed to create Favorite");
+    }
+    return response.json();
   },
-  getAllFavorite: async () => {
-    return fetch("http://localhost:3000/favorites").then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to get Favorites");
+  getFavorite: async ({ userId }) => {
+    return fetch(`http://localhost:3000/favorites?userId=${userId}`).then(
+      (response) => {
+        if (!response.ok) {
+          throw new Error("Failed to get carts");
+        }
+        return response.json();
       }
-      return response.json();
-    });
+    );
   },
 
-  removeFavorite: async ({ favoriteId }) =>
-    fetch(`http://localhost:3000/favorites/${favoriteId}`, {
+  removeFavorite: async ({ favoriteId }) => {
+    const response = await fetch(`${BASE_URL}/favorites/${favoriteId}`, {
       method: "DELETE",
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed To remove favorites");
-      }
-      return response;
-    }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to remove favorite");
+    }
+    return response;
+  },
 
   addToCart: async (userId, shoeId, name, price) => {
-    fetch(`${BASE_URL}/carts`, {
+    const response = await fetch(`${BASE_URL}/carts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ userId, shoeId, name, price }),
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to create cart");
-      }
-      return response;
     });
-  },
-  getAllCarts: async () => {
-    return fetch("http://localhost:3000/carts").then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to get carts");
-      }
-      return response.json();
-    });
+    if (!response.ok) {
+      throw new Error("Failed to create cart");
+    }
+    return response.json();
   },
   getACart: async ({ userId }) => {
     return fetch(`http://localhost:3000/carts?userId=${userId}`).then(
@@ -102,22 +94,21 @@ export const Request = {
     );
   },
 
-  removeFromCart: async ({ cartId }) =>
-    fetch(`http://localhost:3000/carts/${cartId}`, {
+  removeFromCart: async ({ cartId }) => {
+    const response = await fetch(`${BASE_URL}/carts/${cartId}`, {
       method: "DELETE",
-    }).then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed To remove carts");
-      }
-      return response;
-    }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to remove cart item");
+    }
+    return response;
+  },
 };
 
 export const getShoes = Request.getShoes;
 export const createFavorite = Request.createFavorite;
-export const getAllFavorite = Request.getAllFavorite;
+export const getFavorite = Request.getFavorite;
 export const removeFavorite = Request.removeFavorite;
 export const addToCart = Request.addToCart;
-export const getAllCarts = Request.getAllCarts;
 export const getACart = Request.getACart;
 export const removeFromCart = Request.removeFromCart;

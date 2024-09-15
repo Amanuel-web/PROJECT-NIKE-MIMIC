@@ -46,5 +46,11 @@ Features
 +UI: Built using Bootstrap and MaterialUI for modern, clean design.
 +User Authentication: Allows users to log in with predefined credentials or create dummy accounts for testing purposes.
 
+![Screenshot 1](src/assets/page-1.png)
+![Screenshot 2](src/assets/page-2.png)
+![Screenshot 3](src/assets/page-3.png)
+![Screenshot 4](src/assets/page-4.png)
+![Screenshot 5](src/assets/page-5.png)
+
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
